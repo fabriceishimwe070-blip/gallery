@@ -4,92 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIME PHOTOS</title>
-   <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css">
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            height: 100%;
+        }
+    </style>
 </head>
+
 <body>
+
     <div class="main">
-        <div class="seco"><input type="text" id="url" placeholder="Put link"><button onclick="save()">Save</button></div>
+        <div class="seco">
+            <input type="text" id="url" placeholder="Put link">
+            <button onclick="save()">Save</button>
+        </div>
+
         <header><a href="log.html">Log out</a></header>
         <header><a href="https://postimages.org/web">Convert image link</a></header>
-        </div>
-        <div class="nini">
+    </div>
+
+    <div class="nini">
         <div id="container"></div>
-        </div>
-   <script>
+    </div>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCQndLrBgmX1g2jzO47RbUy4CK9quLkQRU",
+  authDomain: "gallery-2c722.firebaseapp.com",
+  projectId: "gallery-2c722"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 function save(){
- const url=document.getElementById("url").value;
+ const url = document.getElementById("url").value;
  if(!url){
     alert("PEST THE LINK THERE👈");
     return;
  }
- let images=JSON.parse(localStorage.getItem("images")||"[]")
- images.push(url)
- localStorage.setItem("images",JSON.stringify(images))
- put()
- document.getElementById("url").value=""
+
+ db.collection("images").add({
+    url: url
+ });
+
+ document.getElementById("url").value = "";
 }
 
 function put(){
-    let container=document.getElementById("container")
-    container.innerHTML=""
-    let images=JSON.parse(localStorage.getItem("images")||"[]")
+    let container = document.getElementById("container");
 
-    images.forEach((url,index)=>{
+    db.collection("images").onSnapshot(snapshot => {
+        container.innerHTML = "";
 
-        let box=document.createElement("div")
-        box.style.position="relative"
-        box.style.display="inline-block"
-        box.style.margin="10px"
-        box.style.textAlign="center"
+        snapshot.forEach(doc => {
 
-        let img=document.createElement("img")
-        img.src=url
-        img.width=200
+            let data = doc.data();
 
-        let enlargeBtn=document.createElement("button")
-        enlargeBtn.textContent="View"
-        enlargeBtn.style.position="absolute"
-        enlargeBtn.style.top="50%"
-        enlargeBtn.style.left="50%"
-        enlargeBtn.style.transform="translate(-50%, -50%)"
+            let box = document.createElement("div");
+            box.style.position = "relative";
+            box.style.display = "inline-block";
+            box.style.margin = "10px";
+            box.style.textAlign = "center";
 
-        enlargeBtn.onclick=function(){
-            if(img.width==200){
-                img.width=700
-            }else{
-                img.width=200
+            let img = document.createElement("img");
+            img.src = data.url;
+            img.width = 200;
+
+            let enlargeBtn = document.createElement("button");
+            enlargeBtn.textContent = "View";
+            enlargeBtn.style.position = "absolute";
+            enlargeBtn.style.top = "50%";
+            enlargeBtn.style.left = "50%";
+            enlargeBtn.style.transform = "translate(-50%, -50%)";
+
+            enlargeBtn.onclick = function(){
+                img.width = (img.width === 200) ? 700 : 200;
             }
-        }
 
-        let button=document.createElement("button")
-        button.textContent="delete"
-        button.style.display="block"
-        button.style.margin="10px auto"
-        button.style.border="none"
-        button.style.color="green"
-        button.style.backgroundColor="black"
-        button.style.fontSize="medium"
-        button.style.fontWeight="bolder"
+            let button = document.createElement("button");
+            button.textContent = "delete";
+            button.style.display = "block";
+            button.style.margin = "10px auto";
+            button.style.border = "none";
+            button.style.color = "green";
+            button.style.backgroundColor = "black";
+            button.style.fontSize = "medium";
+            button.style.fontWeight = "bolder";
 
-        button.onclick=function(){
-            let images=JSON.parse(localStorage.getItem("images")||"[]")
-            images.splice(index,1)
-            localStorage.setItem("images",JSON.stringify(images))
-            put()
-        }
+            button.onclick = function(){
+                db.collection("images").doc(doc.id).delete();
+            }
 
-        box.appendChild(img)
-        box.appendChild(enlargeBtn)
-        box.appendChild(button)
+            box.appendChild(img);
+            box.appendChild(enlargeBtn);
+            box.appendChild(button);
 
-        container.appendChild(box)
-    })
+            container.appendChild(box);
+        });
+    });
 }
 
-window.onload=function(){
-    put()
+window.onload = function(){
+    put();
 }
+
+document.addEventListener("wheel", e => e.preventDefault(), { passive: false });
+document.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+document.addEventListener("keydown", function(e){
+  const keys = ["ArrowDown","ArrowUp","PageDown","PageUp"," "];
+  if(keys.includes(e.key)) e.preventDefault();
+});
+
 </script>
+
 </body>
- 
 </html>
