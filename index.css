@@ -1,0 +1,41 @@
+body{
+    background-color: black;
+    padding: 15px;
+    
+}
+.main{
+    display: flex;
+    justify-content: space-between;
+}
+.seco{
+    display: flex;
+    gap: 20px;
+}
+.container{
+    display: flex;
+    flex-wrap: nowrap;
+}
+button{
+    background: none;
+    border: none;
+    font-size: medium;
+    color: blue;
+}
+input{
+    height: 30px;
+    width: 500px;
+    background: none;
+    border-radius: 20px;
+    padding: 5px;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+a{
+    color: violet;
+    text-decoration: none;
+
+}
+

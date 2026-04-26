@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALLELY</title>
+   <link rel="stylesheet" href="index.css">
+</head>
+<body>
+     <div class="main">
+        <div class="seco"></div>
+        <header><a href="log.html">Log out</a></header>
+        </div>
+        <div id="container"></div>
+   <script>
+function save(){
+ const url=document.getElementById("url").value;
+ if(!url){
+    alert("PEST THE LINK THERE👈");
+    return;
+ }
+ let images=JSON.parse(localStorage.getItem("images")||"[]")
+ images.push(url)
+ localStorage.setItem("images",JSON.stringify(images))
+ put()
+ document.getElementById("url").value=""
+}
+
+function put(){
+    let container=document.getElementById("container")
+    container.innerHTML=""
+    let images=JSON.parse(localStorage.getItem("images")||"[]")
+
+    images.forEach((url,index)=>{
+
+        let box=document.createElement("div")
+        box.style.position="relative"
+        box.style.display="inline-block"
+        box.style.margin="10px"
+        box.style.textAlign="center"
+
+        let img=document.createElement("img")
+        img.src=url
+        img.width=200
+
+        let enlargeBtn=document.createElement("button")
+        enlargeBtn.textContent="View emage"
+        enlargeBtn.style.position="absolute"
+        enlargeBtn.style.top="50%"
+        enlargeBtn.style.left="50%"
+        enlargeBtn.style.transform="translate(-50%, -50%)"
+
+        enlargeBtn.onclick=function(){
+            if(img.width==200){
+                img.width=700
+            }else{
+                img.width=200
+            }
+        }
+
+        let button=document.createElement("button")
+        button.textContent="delete"
+        button.style.display="block"
+        button.style.margin="10px auto"
+        button.style.border="none"
+        button.style.color="green"
+        button.style.backgroundColor="black"
+        button.style.fontSize="medium"
+        button.style.fontWeight="bolder"
+
+       
+
+        box.appendChild(img)
+        box.appendChild(enlargeBtn)
+        box.appendChild(button)
+
+        container.appendChild(box)
+    })
+}
+
+window.onload=function(){
+    put()
+}
+</script>
+</body>
+ 
+</html>
