@@ -3,134 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIME PHOTOS</title>
-    <link rel="stylesheet" href="index.css">
-
+    <title>LOG IN PAGE</title>
+    <script src="index.js" defer></script>
     <style>
-        html, body {
-            margin: 0;
-            padding: 20px;
-            overflow: hidden;
-            height: 100%;
+        .name {
+            background-color: rgb(255, 255, 255,0.7);
+            height: 500px;
+            width:400px;
+            font-size: larger;
+            color: black;
+            border: none;
+            border-radius: 20px;
+            box-shadow: inset 20px 20px 20px rgb(138, 43, 226,0.6);
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 50px;
         }
-.nini {
-    height: calc(100% - 120px);
-    overflow-y: auto;
-}
+            p{
+               
+                color: blue;
+            }
+            body{
+                background-image: url("https://i.pinimg.com/originals/14/ab/0a/14ab0af50a9f9f3bd334dbc2dc8e4139.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+            input{
+                width: 300px;
+                height: 30px;
+                border-radius: 20px;
+
+            }
+            h4{
+                margin-left: 150px;
+                font-size: x-large;
+            }
+            h3{
+                margin-left: 100px;
+            }
+        .none{
+            margin-left: 50px;
+        }
+        button{
+            height: 50PX;
+            width: 100PX;
+            background-color: rgb(127, 255, 0,0.5);
+            border-radius: 20PX;
+            margin-left: 150PX;
+            margin-top: 50PX;
+        }
+        button:hover{
+            background-color: rgb(0, 0, 255,0.4);
+            height: 45PX;
+        }
+         input:hover{
+            height: 29PX;
+            text-decoration: underline none;
+        }
+         .name:hover{
+            background-color: rgb(239, 239, 245,0.5);
+        }
     </style>
 </head>
-
 <body>
-
-    <div class="main">
-        <div class="seco">
-            <input type="text" id="url" placeholder="Put link">
-            <button onclick="save()">Save</button>
+    
+    <div class="name">
+        <h4>LOG IN</h4>
+        <div class="none">
+        <h3>Your name</h3>
+        <input type="text" id="username" placeholder="enter your name">
+        <h3>your pasward</h3>
+        <input itype="password" id="password"  placeholder="password">
         </div>
-
-        <header><a href="log.html">Log out</a></header>
-        <header><a href="https://postimages.org/web">Convert image link</a></header>
+        <button onclick="log()">LOG IN</button>
+        <p id="word"></p>
     </div>
+    <script>
+       function log(){
+         let user=document.getElementById("username").value;
+         document.getElementById("username").value=""
+         if(user.trim().toLowerCase()==="mugisha aime"){
+            window.location.href="index.html"
+         }
+         else{
+            window.location.href="other.html"
+         }
+       }
 
-    <div class="nini">
-        <div id="container"></div>
-    </div>
-
-
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
-<script>
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCQndLrBgmX1g2jzO47RbUy4CK9quLkQRU",
-  authDomain: "gallery-2c722.firebaseapp.com",
-  projectId: "gallery-2c722"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-function save(){
- const url = document.getElementById("url").value;
- if(!url){
-    alert("PEST THE LINK THERE👈");
-    return;
- }
-
- db.collection("images").add({
-    url: url
- });
-
- document.getElementById("url").value = "";
-}
-
-function put(){
-    let container = document.getElementById("container");
-
-    db.collection("images").onSnapshot(snapshot => {
-        container.innerHTML = "";
-
-        snapshot.forEach(doc => {
-
-            let data = doc.data();
-
-            let box = document.createElement("div");
-            box.style.position = "relative";
-            box.style.display = "inline-block";
-            box.style.margin = "10px";
-            box.style.textAlign = "center";
-
-            let img = document.createElement("img");
-            img.src = data.url;
-            img.width = 200;
-
-            let enlargeBtn = document.createElement("button");
-            enlargeBtn.textContent = "View";
-            enlargeBtn.style.position = "absolute";
-            enlargeBtn.style.top = "50%";
-            enlargeBtn.style.left = "50%";
-            enlargeBtn.style.transform = "translate(-50%, -50%)";
-
-            enlargeBtn.onclick = function(){
-                img.width = (img.width === 200) ? 700 : 200;
-            }
-
-            let button = document.createElement("button");
-            button.textContent = "delete";
-            button.style.display = "block";
-            button.style.margin = "10px auto";
-            button.style.border = "none";
-            button.style.color = "green";
-            button.style.backgroundColor = "black";
-            button.style.fontSize = "medium";
-            button.style.fontWeight = "bolder";
-
-            button.onclick = function(){
-                db.collection("images").doc(doc.id).delete();
-            }
-
-            box.appendChild(img);
-            box.appendChild(enlargeBtn);
-            box.appendChild(button);
-
-            container.appendChild(box);
-        });
-    });
-}
-
-window.onload = function(){
-    put();
-}
-
-document.addEventListener("wheel", e => e.preventDefault(), { passive: false });
-document.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
-document.addEventListener("keydown", function(e){
-  const keys = ["ArrowDown","ArrowUp","PageDown","PageUp"," "];
-  if(keys.includes(e.key)) e.preventDefault();
-});
-
-</script>
-
+    </script>
+    
 </body>
 </html>
