@@ -105,7 +105,14 @@ function put(){
 window.onload = function(){
     put();
 }
+document.body.style.overflow = "hidden";
 
+window.addEventListener("wheel", e => e.preventDefault(), { passive: false });
+window.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+window.addEventListener("keydown", function(e){
+  const keys = ["ArrowDown","ArrowUp","PageDown","PageUp"," "];
+  if(keys.includes(e.key)) e.preventDefault();
+});
 </script>
 
 </body>
