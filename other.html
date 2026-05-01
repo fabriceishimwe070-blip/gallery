@@ -14,10 +14,20 @@
             overflow: hidden;
             height: 100%;
         }
+        h3{
+            color: blue;
+            font-size: 25px;
+        }
+        .mar{
+            width: 900px;
+        }
+        span{
+            color: blue;
+        }
     </style>
 <body>
      <div class="main">
-    <div></div>
+    <div class="mar"><marquee behavior="40" direction="right"><h3 id="name"></h3></marquee></div>
  <header><a href="index.html">Log out</a></header>
  </div>
 <div id="container"></div>
@@ -26,6 +36,9 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
+    let name=document.getElementById("name")
+    let user=localStorage.getItem("userName")
+    name.textContent=` Well come,${user}🫴`
 
 const firebaseConfig = {
   apiKey: "AIzaSyCQndLrBgmX1g2jzO47RbUy4CK9quLkQRU",
