@@ -98,7 +98,7 @@ document.body.style.overflow = "hidden";
 
 window.addEventListener("wheel", e => e.preventDefault(), { passive: false });
 window.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
-window.addEventListener("keydown", function(e){
+window.addEventListener("keydown", function(){
   const keys = ["ArrowDown","ArrowUp","PageDown","PageUp"," "];
   if(keys.includes(e.key)) e.preventDefault();
 });
